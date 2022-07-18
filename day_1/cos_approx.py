@@ -3,18 +3,18 @@
 
 cosine approximation function
 """
-__author__ = 'Qusai Al Shidi'
-__email__ = 'qusai@umich.edu'
+__author__ = 'Aliaa Afify'
+__email__ = 'aliaa.afify@gmail.com'
 
 from math import factorial
 from math import pi
 
 
 def cos_approx(x, accuracy=10):
-    """
-    """
-    return 
-
+    
+    COS = sum( (-1)**n * x**(2*n) / factorial(2*n) for n in range(accuracy+1) )
+            
+    return COS
 
 
 # Will only run if this is run from command line as opposed to imported
