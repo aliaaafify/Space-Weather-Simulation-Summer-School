@@ -42,9 +42,9 @@ if __name__ == '__main__' :
     args = parse_args()
     print(args.dataset_dir)  #print the directory where the database are
     for fi in args.files_list:
-        for line in fi:
-            dataset_arr[line] = args.dataset_dir[line] #the dataset array
-            dataset[line] = nc.Dataset(dataset_arr[line]) #directory for the file
+        
+            dataset_arr[fi] = args.dataset_dir[fi] #the dataset array
+            dataset[fi] = nc.Dataset(dataset_arr[fi]) #directory for the file
     
             dataset['tec'][:] #tec array
             dataset['lat'][:] #latitude array
@@ -57,11 +57,11 @@ if __name__ == '__main__' :
                 """Function to plot the TEC datat"""
         
                 fig, ax = plt.subplots(1,figsize=figsize) #define the subplot figure from panels and sizes
-                ax.pcolormesh(dataset['lon'][:],dataset['lat'][:],dataset['tec'][:]) #put the 3 dataset on meshgrid
+                pmesh=ax.pcolormesh(dataset['lon'][:],dataset['lat'][:],dataset['tec'][:]) #put the 3 dataset on meshgrid
                 ax.set_title("Plot of TEC of day 2022-07-20") #write down the title 
-                ax.set_xlabel('longitude (degree)') #write dowm the x-axis label
+                ax.set_xlabel('longitude ('+ dataset['lon'].unit +')') #write dowm the x-axis label
                 ax.set_ylabel('latitude (degree)') #write down the y-axis label
-                fig.colorbar(mappable=None, cax=None, ax=None) #set the colorbar for the figure
+                fig.colorbar(pmesh, cax=None, ax=None) #set the colorbar for the figure
                 fig.show() #figure show {it will not work for spyder}
                 return fig,ax #that's the two variables that you need to insert
     
