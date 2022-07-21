@@ -79,7 +79,11 @@ ax.plot(T[lp],D[lp], marker='+',
         label='<-100 nT',
         alpha=0.6)
 
-#ax.vlines([20, 100], 0, 1, linestyles='dashed', colors='red')
+minsymh=np.argmin(D)
+maxsymh=np.argmax(D)
+
+ax.axvline(x=T[minsymh])
+ax.axvline(x=T[maxsymh])
 
 ax.set_xlabel('year of 2013')
 ax.set_ylabel('SYMH (nT)')
