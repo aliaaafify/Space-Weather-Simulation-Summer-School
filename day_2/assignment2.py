@@ -12,7 +12,7 @@ from scipy.interpolate import make_interp_spline
 import argparse
 
 
-def read_ascii_file(filename = '/Users/aliaaafify/Documents/SWSSS/omni_min_def_pTiK8HlHDi.lst', index=-1):
+def read_ascii_file(filename, index=-1):
     "this is reading an ascii file of omni data"
     with open(filename) as f:
         data_dic = {"time":[],
@@ -37,7 +37,7 @@ def read_ascii_file(filename = '/Users/aliaaafify/Documents/SWSSS/omni_min_def_p
         
     return data_dic
 
-filename='/Users/aliaaafify/Documents/SWSSS/omni_min_def_pTiK8HlHDi.lst'
+filename='/Users/aliaaafify/Documents/SWSSS/project2_week1/omni_min_def_2_NFWoL_3p.lst'
 index = -1
 
 data_dic = read_ascii_file(filename,index)
@@ -68,11 +68,12 @@ maxsymh=np.argmax(D)
 ax.axvline(x=T[minsymh])
 ax.axvline(x=T[maxsymh])
 
-ax.set_xlabel('year of 2013')
+ax.set_xlabel('year of 2002')
 ax.set_ylabel('SYMH (nT)')
 ax.grid(True)
 ax.legend()
 #plt.show()
+
 """
 outfile = 'plot_example1.png'
 print('Writing file : ' + outfile)
