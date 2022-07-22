@@ -196,12 +196,12 @@ Data Visualization II
 
 Now, let's us work with density data from TIE-GCM instead, and plot the density field at 310km
 """
-# Import required packages
 import h5py
 
 load_data=h5py.File('/Users/aliaaafify/Documents/SWSSS/SWSSS_Data/TIEGCM/2002_TIEGCM_density.mat')
 #%%
 print('Key within the database:', list(load_data.keys()))
+
 tiegcm_dens = (10**np.array(load_data["density"])*1000).T #convert from g/cm3 to kg/m3
 altitudes_tiegcm = np.array(load_data['altitudes']).flatten()
 latitudes_tiegcm = np.array(load_data['latitudes']).flatten()
@@ -393,7 +393,35 @@ import pandas as pd
 csv_path = '/Users/aliaaafify/Documents/SWSSS/SWSSS_Data/jena_climate_2009_2016.csv'
 df = pd.read_csv(csv_path)
 print(df)
+df =df[5::6]
+print(df)
+date_time = pd.to_datetime(df.pop('Date Time'), format='%d.%m.%Y %H:%M:%S')
+print(date_time)
+df.head()
+df.tail()
 
+plot_cols = ['T (degC)', 'p (mbar)', 'rho (g/m**3)']
+plot_features = df[plot_cols]
+plot_features.index = date_time
+_ = plot_features.plot(subplots=True)
+
+plot_features = df[plot_cols][:480]
+plot_features.index = date_time[:480]
+_ = plot_features.plot(subplots=True)
+
+
+df.describe().transpose()
+
+wv = df['wv (m/s)']
+bad_wv = wv == -9999.0
+wv[bad_wv] = 0.0
+
+max_wv = df['max. wv (m/s)']
+bad_max_wv = max_wv == -9999.0
+max_wv[bad_max_wv] = 0.0
+
+# The above inplace edits are then reflected in the DataFrame.
+df['wv (m/s)'].min()
 
 #%%
 """
