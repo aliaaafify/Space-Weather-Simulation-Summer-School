@@ -306,29 +306,7 @@ print(interpolated_function_1(pts))
 print(function_1(pts[:,0],pts[:,1],pts[:,2]))
 #%%
 #3D interpolation
-import argparse
 
-def parse_args():
-    parser = argparse.ArgumentParser(description ='day3_assignment')
-    parser.add_argument(
-        '-JB2008',
-        help='JB2008 model',
-        type=str)
-    parser.add_argument(
-        '-tiegcm',
-        help='tiegcm model' ,
-        type=str)
-    parser.add_argument(
-        '-tindex',
-        help='time index',
-        type=str,default='31*24')
-    parser.add_argument(
-        '-output',
-        help='into output file',
-        type=str,default='compare1.png')
-        
-    args = parser.parse_args()
-    return args
 
 time_index = 31*24
 JB2008_dens_feb1 = JB2008_dens_reshaped[:,:,:,time_index]
@@ -380,13 +358,7 @@ axs[1].tick_params(axis = 'both', which = 'major', labelsize = 16)
 # Make a colorbar for the ContourSet returned by the contourf call.
 cbar = fig.colorbar(cs,ax=axs[1])
 cbar.ax.set_ylabel('Density')
-axs[ik].set_xlabel("Local Solar Time", fontsize=18)
-
-outfile = args.output
-print('Writing file : ' + outfile)
-plt.savefig(outfile)
-plt.close()
-
+axs[ik].set_xlabel("Local Solar Time", fontsize=18
 
 
 #%%
