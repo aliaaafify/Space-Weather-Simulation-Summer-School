@@ -13,44 +13,14 @@ import argparse
 import h5py
 import matplotlib.pyplot as plt
 
-def parse_args():
-    parser = argparse.ArgumentParser(description ='comparsion between two models data')
-    parser.add_argument(
-        'JB2008_dir',
-        help='JB2008 model',
-        type=str)
-    parser.add_argument(
-        'TIEGCM_dir',
-        help='tiegcm model' ,
-        type=str)
-    parser.add_argument(
-        'alt',
-        help='altitude',
-        type=int, default=400)
-    parser.add_argument(
-        'time_index',
-        help='time index',
-        type=int, default=31*24)
-#    parser.add_argument(
-#        '-output',
-#        help='into output file',
-#        type=str,default='compare1.png')
-        
-    args = parser.parse_args()
-    return args
 # start of the main code
 if __name__ == '__main__' :
     
-    args = parse_args()
-    print(args.JB2008_dir)
-    print(args.TIEGCM_dir)
-    print(args.alt)
-    print(args.time_index)
         
     # Load Density Data for Jb2008 and TIEGCM
-    dir_density_Jb2008 = args.JB2008_dir
-    #alt = 400
-    #time_index = 31*24
+    dir_density_Jb2008 =  '/Users/aliaaafify/Documents/SWSSS/SWSSS_Data/JB2008/2002_JB2008_density.mat'
+    alt = 400
+    time_index = 31*24
     
     try:
         load_data_Jb2008 = loadmat(dir_density_Jb2008)
@@ -58,10 +28,7 @@ if __name__ == '__main__' :
     except:
         print("File not found. Please check your directory")
     
-    #
-    
-    #JB2008_dens = args.JB2008_dir[0]
-    load_data_tiegcm = args.TIEGCM_dir
+    load_data_tiegcm = ''
     print(load_data_tiegcm)
     alt=args.alt
     time_index=args.time_index
@@ -111,17 +78,11 @@ if __name__ == '__main__' :
     
     axs[ik].set_xlabel("Local Solar Time", fontsize=18)   
     
-    
     JB2008_dens_feb1 = JB2008_dens_reshaped[:,:,:,time_index]
     
     JB2008dens_feb1_alt=np.mean(np.mean(JB2008_dens_feb1, axis=0),axis=0)
     tiegcm_dens_feb1 = tiegcm_dens_reshaped[:,:,:,time_index]
     
-    xg, yg ,zg = np.meshgrid(localSolarTimes_tiegcm, latitudes_tiegcm, altitudes_tiegcm, indexing='ij', sparse=True)
-    sample_data = function_1(xg, yg, zg)
-    
-    xgJ, ygJ ,zgJ = np.meshgrid(localSolarTimes_JB2008, latitudes_JB2008, altitudes_JB2008, indexing='ij', sparse=True)
-    sample_data_JB2008 = function_1(xgJ, ygJ, zgJ)
     
     tiegcm_function = RegularGridInterpolator((localSolarTimes_tiegcm, latitudes_tiegcm, altitudes_tiegcm), tiegcm_dens_feb1)
     JB2008_function = RegularGridInterpolator((localSolarTimes_JB2008, latitudes_JB2008, altitudes_JB2008), JB2008_dens_feb1)
@@ -160,9 +121,4 @@ if __name__ == '__main__' :
     cbar = fig.colorbar(cs,ax=axs[1])
     cbar.ax.set_ylabel('Density')
     axs[ik].set_xlabel("Local Solar Time", fontsize=18)
-    
-    #outfile = args.output
-    #print('Writing file : ' + outfile)
-    #plt.savefig(outfile)
-    #plt.close()
     
