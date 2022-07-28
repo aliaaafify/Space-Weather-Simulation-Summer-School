@@ -25,12 +25,12 @@ __email__ = 'jvilap@mit.edu'
 import numpy as np
 import matplotlib.pyplot as plt
 from math import pi
-%matplotlib qt
+#%matplotlib qt
 plt.close()
 import matplotlib.animation as animation
 
 "Flow parameters"
-nu = 0.01
+nu = 0
 c = -2
 u0 = 0
 
@@ -49,6 +49,7 @@ dt = 1/50
 time = np.arange(0,3+dt,dt)
 nt = np.size(time)
 
+order = 2
 "Initialize solution variable"
 U = np.zeros((N+1,nt))
 
@@ -57,40 +58,44 @@ for it in range(nt-1):
 
     "System matrix and RHS term"
     "Diffusion term"
-    Diff = nu*(1/Dx**2)*(2*np.diag(np.ones(N+1)) - np.diag(np.ones(N),-1) - np.diag(np.ones(N),1))
+    Diff = nu*(1/Dx**2)*(2*np.diag(np.ones(N+2)) - np.diag(np.ones(N+1),-1) - np.diag(np.ones(N+1),1))
 
     "Advection term:"
         
-    "Sensor"
+    # "Sensor"
     U0 = U[:,it]
-    uaux = np.concatenate(([U0[0]], U0,[U0[N]]))
-    Du = uaux[1:N+3] - uaux[0:N+2] + 1e-8
-    r = Du[0:N+1]/Du[1:N+2]
+    # uaux = np.concatenate(([U0[0]], U0,[U0[N]]))
+    # Du = uaux[1:N+3] - uaux[0:N+2] + 1e-8
+    # r = Du[0:N+1]/Du[1:N+2]
     
-    "Limiter"
-    if beta>0:
-        phi = np.minimum(np.minimum(beta*r,1),np.minimum(r,beta))
-        phi = np.maximum(0,phi)
-    else:
-        phi = 2*r/(r**2 + 1)
+    # "Limiter"
+    # if beta>0:
+    #     phi = np.minimum(np.minimum(beta*r,1),np.minimum(r,beta))
+    #     phi = np.maximum(0,phi)
+    # else:
+    #     phi = 2*r/(r**2 + 1)
         
-    phim = phi[0:N]
-    phip = phi[1:N+1]
+    # phim = phi[0:N]
+    # phip = phi[1:N+1]
         
     
     "Upwind scheme"
     cp = np.max([c,0])
     cm = np.min([c,0])
     
-    Advp = cp*(np.diag(1-phi) - np.diag(1-phip,-1))
-    Advm = cm*(np.diag(1-phi) - np.diag(1-phim,1))
-    Alow = Advp-Advm
-    
-    "Centered differences"
-    Advp = -0.5*c*np.diag(phip,-1)
-    Advm = -0.5*c*np.diag(phim,1)
-    Ahigh = Advp-Advm
+    if order < 2:
+        Advp = cp*(np.diag(np.ones(N+1)) - np.diag(np.ones(N),-1))
+        Advm = cm*(np.diag(np.ones(N+1)) - np.diag(np.ones(N),1))
+    else:
+        Advp = cp*(np.diag(np.ones(N) - 2*np.diag(np.ones(N+1) + np.diag(np.ones(N+2)))
+        Advm = cm*(np.diag(np.ones(N) - 2*np.diag(np.ones(N+1) + np.diag(np.ones(N+2)))
         
+        Alow = Advp-Advm
+        # "Centered differences"
+        # Advp = -0.5*c*np.diag(phip,-1)
+        # Advm = -0.5*c*np.diag(phim,1)
+        Ahigh = Advp-Advm
+    
     Adv = (1/Dx)*(Ahigh + Alow)
     A = Diff + Adv
     
@@ -102,7 +107,7 @@ for it in range(nt-1):
     "Temporal terms"
     A = A + (1/dt)*np.diag(np.ones(N+1))
     F = F + U0/dt
-
+    
     "Boundary condition at x=0"
     A[0,:] = (1/Dx)*np.concatenate(([1.5, -2, 0.5],np.zeros(N-2)))
     F[0] = 0

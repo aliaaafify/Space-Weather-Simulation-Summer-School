@@ -106,9 +106,9 @@ def calc_tau(SZA_in_deg, density_in_m3, scale_height_in_km, cross_section):
     tau = np.zeros((nWaves, nAlts))
 
     # calculate Tau:
-    iWave = 5
-    tau[iWave][:] = integrated_density * cross_section[iWave]
-
+    for iWave in range(nWaves):
+        
+        tau[iWave][:] = integrated_density * cross_section[iWave]
     return tau
 
 #-----------------------------------------------------------------------------
@@ -133,27 +133,34 @@ def calculate_Qeuv(density_in_m3,
 
     Qeuv = np.zeros(nAlts)
 
-    iWave = 5
-
-    # intensity is a function of altitude (for a given wavelength):
-    intensity = intensity_inf[iWave] * np.exp(-tau[iWave][:])
-    Qeuv = Qeuv + \
-        efficiency * \
-        density_in_m3 * \
-        intensity * \
-        cross_section[iWave] * \
-        energies[iWave]
-
+    for iWave in range(nWaves):
+        
+        # intensity is a function of altitude (for a given wavelength):
+            intensity = intensity_inf[iWave] * np.exp(-tau[iWave][:])
+            Qeuv = Qeuv + \
+                efficiency * \
+                density_in_m3 * \
+                intensity * \
+                cross_section[iWave] * \
+                energies[iWave]
+                
     return Qeuv
 
 #-----------------------------------------------------------------------------
 # calculate rho given densities of O (and N2 and O2)
 #-----------------------------------------------------------------------------
 
-def calc_rho(density_o, mass_o):
-    rho = density_o * mass_o * cAMU_
-    return rho
+def calc_rho_o(density_o, mass_o):
+    rho_o = density_o * mass_o * cAMU_
+    return rho_o
 
+def calc_rho_o2(density_o2, mass_o2):
+    rho_o2 = density_o2 * mass_o2 * cAMU_
+    return rho_o2
+
+def calc_rho_n2(density_n2, mass_n2):
+    rho_n2 = density_n2 * mass_n2 * cAMU_
+    return rho_n2
 #-----------------------------------------------------------------------------
 # calculate cp.  We have hard coded this to be 1500, which is for O, but
 # we could pass densities and vibrational states and get the real Cp.
