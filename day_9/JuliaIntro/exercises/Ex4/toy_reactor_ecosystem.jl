@@ -21,4 +21,4 @@ k = [100.0, 0.25, 1.0]
 x0 = [1.0,0.0,0.0]
 
 prob = ODEProblem(reactor!, x0, (0.0, 10.0), (k, S, zeros(3)))
-@elapsed sol = solve(prob)
+time = @elapsed sol = solve(prob)

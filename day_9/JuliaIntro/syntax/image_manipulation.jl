@@ -17,7 +17,7 @@ four_way_philip = [head                    reverse(head, dims = 2);
 # Compression
 rand_img = load("random_pic_1.jpeg")
 U, Σ, V = svd(rand_img)
-img_chain = Gray.(U[:,1]*Diagonal(Σ[1:1])*V[:,1]')
+img_chain = Gray.(U[:,1:5]*Diagonal(Σ[1:5])*V[:,1:5]')
 for N in 11:10:51
     compressed_img = Gray.(U[:,1:N]*Diagonal(Σ[1:N])*V[:,1:N]')
     img_chain = vcat(img_chain, compressed_img)

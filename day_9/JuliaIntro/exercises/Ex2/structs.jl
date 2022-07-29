@@ -9,7 +9,7 @@ function my_times(a::MyComplex, b::MyComplex)
     real_part = a.Re * b.Re - a.Im * b.Im
     imaginary_part = a.Re * b.Im + a.Im * b.Re
     return MyComplex(real_part, imaginary_part)
-end
+end 
 
 # test-case
 x = MyComplex(1.0, 2.0)
@@ -23,10 +23,15 @@ z_julia = x_julia * y_julia
 
 # Implement function my_add that adds
 # two objects of type MyComplex and returns the result as such
-
+function my_add(a::MyComplex, b::MyComplex)
+    return MyComplex(a.Re + b.Re, a.Im + b.Im)
+end
+my_add(x, y)
 
 # create a method for Julia's + function to work on your type here
-
+function +(a::MyComplex, b::MyComplex)
+    return my_add(a,b)
+end
 
 # run the following lines to test your implementation
 # z = x + y

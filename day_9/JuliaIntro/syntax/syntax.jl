@@ -11,13 +11,13 @@ exp(🔥)
 # Golden ratio
 φ = (√5 + 1)/2 
 phi = (sqrt(5) + 1)/2 
-
 # Navier stokes 
 NS = ρ * (∂u + (u ⋅ ∇*u)) + 𝒫
 
 # other useful things 
 a = π
 unit_disc_area = 2*a
+2π
 
 ##################################
 #### Arrays/Vectors/Matrices
@@ -116,7 +116,7 @@ p = f(0.5)
 # vectorization/(map-reduce)
 # evaluates our function at every element of the supplied 
 # vector/array and returns the result in the same shape!
-p = f.([0.5, 2.0])
+p = f.([0.5, 2.0]) # ths dot means that apply f function on every element of the matrix
 
 # differences between python and julia
 # Why Julia was created

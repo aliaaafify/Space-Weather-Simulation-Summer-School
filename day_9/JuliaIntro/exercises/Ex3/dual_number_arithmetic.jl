@@ -12,7 +12,7 @@ end
 ##### product rule
 #################################
 function *(a::DualNumber, b::DualNumber)
-    return #complete this 
+    return DualNumber(a.val*b.val, b.val*a.grad + b.grad*a.val)#complete this 
 end
 
 function *(a::Number, b::DualNumber)
@@ -27,22 +27,22 @@ end
 ##### addition
 #################################
 function +(a::DualNumber, b::DualNumber) 
-    return # complete
+    return DualNumber(a.val + b.val, a.grad + b.grad) # complete
 end
 
 function +(a::DualNumber, b::Number) 
-    return # complete
+    return DualNumber(a.val + b, a.grad) # complete
 end
 
 function +(a::Number, b::DualNumber)
-    return b+a 
+    return DualNumber(a + b.val, b.grad) 
 end
 
 #################################
 ##### Chain rule for powers
 #################################
 function ^(a::DualNumber, b::Number)
-    return # complete 
+    return DualNumber(a.val^b, b*a.grad^(b-1))# complete 
 end
 
 #################################
